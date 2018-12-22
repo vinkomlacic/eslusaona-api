@@ -2,8 +2,9 @@
   "name": "eslusaona-api",
   "version": "1.0.0",
   "description": "REST API for eslusaona application",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "server-start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,13 @@
   "bugs": {
     "url": "https://gitlab.com/vinkomlacic/eslusaona-api/issues"
   },
-  "homepage": "https://gitlab.com/vinkomlacic/eslusaona-api#readme"
+  "homepage": "https://gitlab.com/vinkomlacic/eslusaona-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
 }
