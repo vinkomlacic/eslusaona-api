@@ -1,0 +1,24 @@
+{
+  "development": {
+    "database": "eslusaona_dev",
+    "username": "root",
+    "password": "",
+    "dialect": "mysql",
+    "options": {
+      "dialect": "mysql",
+      "host": "127.0.0.1",
+      "port": 3306
+    }
+  },
+  "production": {
+    "database": "eslusaona_prod",
+    "username": "root",
+    "password": "",
+    "dialect": "mysql",
+    "options": {
+      "dialect": "mysql",
+      "host": "127.0.0.1",
+      "port": 3306
+    }
+  }
+}

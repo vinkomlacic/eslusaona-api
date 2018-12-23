@@ -2,37 +2,28 @@
  * Entry point for the server.
  * @author vmlacic
  */
+'use strict'
 
+// Imports
 const express = require('express');
-app = express();
+const logRequest = require('./middleware/logRequest');
+const bodyParser = require('body-parser');
+const routes = require('./routes');
+
+server = express();
 port = process.env.PORT || 3000;
 
-// Middleware
-const bodyParser = require('body-parser');
-
 // Database configuration
-const mysql = require('mysql');
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'eslusaona',
-});
+server.set('model', require('./model'));
 
+// Set up middleware at an serverlication level
+server.use(logRequest); // logs request time and content
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
 
-// Connect to database
-db.connect();
+// Configure routing for the server
+routes(server);
 
-// Listen on port 3000
-app.listen(port);
-
-// Set up middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Import and register routes
-const routes = require('./routes/appRoutes');
-routes(app);
-
-
+// Listen on port 3000. Voilà!
+server.listen(port);
 console.log('eslusaona-api server started on: ' + port);
