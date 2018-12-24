@@ -8,7 +8,7 @@ const createFakeUsers = require('../fakers/userFaker');
 const fakeUsers = [];
 
 for (let i = 0; i < 100; i++) {
-  fakeUsers.push(createFakeUsers(1));
+  fakeUsers.push(createFakeUsers());
 }
 
 module.exports = {

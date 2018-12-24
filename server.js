@@ -33,7 +33,7 @@ const start = () => {
   // Configure routing for the server
   routes(server);
 
-  // Listen on port 3000. Voilà!
+  // Listen on port 3000.
   https.createServer({
     key: fs.readFileSync('./certs/server.key'),
     cert: fs.readFileSync('./certs/server.cert'),
