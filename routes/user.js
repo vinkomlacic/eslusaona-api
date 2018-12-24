@@ -5,7 +5,7 @@
 'use strict';
 
 const express = require('express');
-const userController = require('../controller/User');
+const userController = require('../controller/user');
 
 
 // Router for the /user route.
@@ -18,13 +18,14 @@ const router = express.Router();
 router
   .get('/', userController.getAll)
   .get('/:userId', userController.getById)
-  .put('/:userId', userController.updateOrCreateById)
+  .patch('/:userId', userController.updateOrCreateById)
   .delete('/:userId', userController.deleteById);
 
 /**
  * Handles requests to user/login.
  * Contents of the request are username/email and password.
- * In the response the API returns a token. In the header of every consequent request.
+ * In the response the API returns a token.
+ * In the header of every consequent request the client must send that token.
  * The token is valid for 5 minutes. Every new request refreshes the token.
  */
 router.post('/login', userController.login);

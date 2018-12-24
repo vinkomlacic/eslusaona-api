@@ -4,8 +4,15 @@
  */
 
 module.exports = function(app) {
-  const userRouter = require('./user');
+  // const userRouter = require('./user');
 
-  app.route('/user', userRouter);
+  // app.use('/user', userRouter); // controller not finished yet
+  app.get('/', function(req, res) {
+    res.send('Lorem ipsum get response.');
+  })
+
+  app.post('/', function(req, res) {
+    res.send('Lorem ipsum post response.')
+  })
   
 }
