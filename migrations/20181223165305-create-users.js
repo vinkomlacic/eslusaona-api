@@ -3,17 +3,19 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true,
+        allowNull: false,
+      },
+      uuid: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        unique: true,
       },
       roleId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: 'Roles',
-          key: 'id',
-        },
+        allowNull: false,
       },
       firstName: {
         type: Sequelize.STRING
@@ -22,13 +24,23 @@ module.exports = {
         type: Sequelize.STRING
       },
       userName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          isEmail: true,
+          notEmpty: true,
+        },
+        unique: true,
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          len: [6, undefined],
+        },
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +50,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    }).then(function() {
+      return queryInterface.addConstraint('Users', ['roleId'], {
+        type: 'foreign key',
+        allowNull: false,
+        references: {
+          table: 'Roles',
+          field: 'id',
+        },
+      });
     });
   },
   down: (queryInterface, Sequelize) => {

@@ -9,6 +9,8 @@
  */
 'use strict';
 const crypto = require('crypto');
+const InternalError = require('../utils/InternalError');
+const statusCodes = require('../utils/statusCodes');
 
 /**
  * Creates hash of the password with random 16 byte salt.
@@ -17,8 +19,8 @@ const crypto = require('crypto');
  * @throws Error if the password is too short.
  */
 const hashPasswordWithSalt = password => {
-  if (password.length < 8) {
-    throw Error('Password is too short.');
+  if (password.length < 6) {
+    throw new InternalError(statusCodes.passwordTooShort);
   }
 
   const salt = crypto.randomBytes(16); // 16 byte random salt

@@ -22,4 +22,27 @@ const consoleLogger = function(req, res, next) {
   next();
 };
 
-module.exports.consoleLogger = consoleLogger;
+/**
+ * Creates a logger. You need to specify output medium.
+ * Default is console.
+ */
+class Logger {
+  constructor(output) {
+    if (output === undefined) {
+      this.log = consoleLogger;
+      return;
+    }
+
+    if (!output instanceof str) {
+      throw Error('Invalid argument type.');
+    }
+
+    if (output.toLowerCase() === 'console') {
+      this.log = consoleLogger;
+    } else {
+      throw Error(`${output} is not yet implemented.`);
+    }
+  }
+}
+
+module.exports = Logger;

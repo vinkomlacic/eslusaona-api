@@ -15,11 +15,11 @@ const router = express.Router();
  * Handles requests to /user.
  * These actions are available only to logged in administrator account.
  */
-router
-  .get('/', userController.getAll)
-  .get('/:userId', userController.getById)
-  .patch('/:userId', userController.updateOrCreateById)
-  .delete('/:userId', userController.deleteById);
+// router
+//   .get('/', userController.getAll)
+//   .get('/:userId', userController.getById)
+//   .patch('/:userId', userController.updateOrCreateById)
+//   .delete('/:userId', userController.deleteById);
 
 /**
  * Handles requests to user/login.
@@ -53,13 +53,13 @@ router.post('/register', userController.register);
  * 
  * The response is status OK is request is valid.
  */
-router.post('/', userController.resetPassword);
+// router.post('/', userController.resetPassword);
 
 /**
  * Handles requests to /user/validate.
  * Validates the token.
  * Response status is OK if the token has not expired.
  */
-router.post('/', userController.validate);
+router.post('/validate', userController.validate);
 
 module.exports = router;

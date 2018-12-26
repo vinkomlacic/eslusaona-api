@@ -4,9 +4,9 @@
  */
 
 module.exports = function(app) {
-  // const userRouter = require('./user');
+  const userRouter = require('./user');
 
-  // app.use('/user', userRouter); // controller not finished yet
+  app.use('/user', userRouter);
   app.get('/', function(req, res) {
     res.send('Lorem ipsum get response.');
   })

@@ -5,7 +5,6 @@ module.exports = {
     const currentTime = new Date();
 
     return queryInterface.bulkInsert('Roles', [
-      { name: 'GUEST', createdAt: currentTime, updatedAt: currentTime },
       { name: 'USER', createdAt: currentTime, updatedAt: currentTime },
       { name: 'ADMINISTRATOR', createdAt: currentTime, updatedAt: currentTime },
     ]);

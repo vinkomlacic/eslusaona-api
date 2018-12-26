@@ -4,18 +4,17 @@
  */
 'use strict'
 
-/** IMPORTS */
 const https = require('https');
 const express = require('express');
 const fs = require('fs');
 
 // middleware
-const logger = require('./middleware/logger');
+const Logger = require('./middleware/logger');
+const errorHandler = require('./middleware/errorHandler');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 
-/************************ */
-
+// Start server
 const start = () => {
   const server = express();
   const port = process.env.PORT || 3000;
@@ -23,15 +22,22 @@ const start = () => {
   // Database configuration
   server.set('models', require('./models'));
 
-  // Set up middleware at an server at application level
+  // X-Powered-By header disabled for security reasons.
+  server.disable('x-powered-by');
+
+  // Set up server middleware at application level
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
   if (process.env.NODE_ENV === 'development') {
-    server.use(logger.consoleLogger); // logs request time and request info
+    const logger = new Logger();
+    server.use(logger.log); // logs request time and request info to console
   }
 
   // Configure routing for the server
   routes(server);
+
+  // Middleware error handler
+  server.use(errorHandler);
 
   // Listen on port 3000.
   https.createServer({

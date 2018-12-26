@@ -12,12 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    RoleId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Roles',
-        key: 'id',
-      },
+    uuid: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      unique: true,
     },
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
@@ -27,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         isEmail: true,
-        notNull: true,
         notEmpty: true,
       },
       unique: true,
@@ -42,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   User.associate = function(models) {
+    User.Role = User.belongsTo(models.Role);
   };
   return User;
 };
