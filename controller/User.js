@@ -1,177 +1,188 @@
 /**
- * User controller.
- * @todo Check jwt lib - possible jwt algorithm attack?
- * @todo Write refresh token mechanism.
+ * User controller. Used for fetching user data.
+ * These routes require admin privilege.
  * @author vmlacic
  */
-'use strict'
-const passwordUtils = require('../utils/password');
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const checkRequired = require('../utils/checkRequiredAttributes');
+'use strict';
+
 const statusCodes = require('../utils/statusCodes');
 const InternalError = require('../utils/InternalError');
+const Password = require('../utils/password');
 
-/***************************************************************************************************
- * Handles POST request to /user/register.
+/*******************************************************************************
+ * Handles GET requests to /user. Returns all users.
  */
-const register = async (req, res, next) => {
-  const requestValid = checkRequired(['firstName', 'lastName', 'userName', 'email', 'password'], req);
-  if (requestValid instanceof Error) {
-    next(requestValid);
-    return;
-  }
-
-  const { firstName, lastName, userName, email, password } = req.body;
-  let passwordStoreValue;
-  try {
-    passwordStoreValue = passwordUtils.hashPasswordWithSalt(password);
-
-  } catch (err) {
-    if (err instanceof InternalError) next(err);
-    else throw err;
-    return;
-  }
-
-  // Get the user and role model
-  const User = req.app.get('models').User;
-  const Role = req.app.get('models').Role;
-
-  const userEmailExists = await User.findOne({
-    where: {
-      email,
-    },
-  });
-  const userNameExists = await User.findOne({
-    where: {
-      userName,
-    },
-  });
-
-  if (userEmailExists !== null) {
-    const error = new InternalError(statusCodes.emailExists);
-    next(error);
-    return;
-  }
-
-  if (userNameExists !== null) {
-    const error = new InternalError(statusCodes.userNameExists);
-    next(error);
-    return;
-  }
-
-  Role.findOne({
-    where: {
-      name: 'USER',
-    },
-  })
-  .then(role => {
-    return User.create({
-      /** @todo better uuid generator, possibly creates an existing uuid */
-      uuid: crypto.randomBytes(16).toString('hex'),
-      firstName,
-      lastName,
-      userName,
-      email,
-      password: passwordStoreValue,
-      RoleId: role.get('id'),
-    });
-  })
-  .then(user => {
-    return res.status(200).send({ type: 'SingleItemResponse', status: statusCodes.registrationSuccess });
-  })
-  .catch(err =>  {
-    next(err);
-  });
-};
-
-
-/***************************************************************************************************
- * Handles POST request to /user/login.
- */
-const login = (req, res, next) => {
-  const requestValid = checkRequired(['userName', 'password'], req);
-  if (!requestValid) {
-    next(requestValid);
-    return;
-  }
-
-  const { userName, password } = req.body;
-
-  // Get the user model
+const getAll = (req, res, next) => {
   const User = req.app.get('models').User;
 
-  User.findOne({
-    where: {
-      userName
-    },
-  })
-  .then(user => {
-    if (user === null) {
-      const error = new InternalError(statusCodes.nonExistingUser);
-      next(error);
-      return;
-    }
-
-    const hashPassword = user.get('password');
-
-    if (!passwordUtils.validatePassword(password, hashPassword)) {
-      const error = new InternalError(statusCodes.invalidPassword);
-      next(error);
-      return;
-    }
-
-    const RoleId = user.get('RoleId');
-    const uuid = user.get('uuid');
-
-    // Create a web token
-    const token = jwt.sign({ uuid, RoleId }, process.env.SECRET, {
-      expiresIn: 600,
-    });
-
-    return res.status(200).send({
-      type: 'SingleItemResponse',
-      status: statusCodes.loginSuccess,
-      data: {
-        token
-      }
+  User.findAll({})
+  .then(users => {
+    res.status(200).send({
+      type: 'ListItemResponse',
+      status: statusCodes.OK,
+      data: users,
     });
   })
   .catch(err => {
     next(err);
   });
-      
 };
 
-
-/***************************************************************************************************
- * Handles POST requests to /user/validate.
+/*******************************************************************************
+ * Handles GET requests to /user/{id}. Returns user with the specified id. 
  */
-const validate = (req, res, next) => {
-  const requestValid = checkRequired(['token'], req);
-  if (!requestValid) {
-    next(requestValid);
-    return;
-  }
+const getById = (req, res, next) => {
+  const User = req.app.get('models').User;
 
-  const { token } = req.body;
-  console.debug(token);
+  User.findOne({
+    where: {
+      id: req.params.userId,
+    },
+  })
+  .then(user => {
+    if (user === null) throw new InternalError(statusCodes.nonExistingUser);
+
+    res.status(200).send({
+      type: 'SingleItemResponse',
+      status: statusCodes.OK,
+      data: user,
+    });
+  })
+  .catch(err => {
+    next(err);
+  });
+};
+
+/*******************************************************************************
+ * Handles PATCH requests to user/{id}.
+ * The administrator is allowed to change these columns in the User table:
+ * first name, last name, username, email, password and RoleId.
+ * Id and uuid of the user object are considered immutable and on an attempt to
+ * change these properties the controller will return an error response.
+ * There should not be a valid reason for changing these properties, but if you
+ * are in such a need delete the user row and create another one.
+ */
+const updateById = (req, res, next) => {
+  const User = req.app.get('models').User;
+  const newUser = req.body.user;
 
   try {
-    jwt.verify(token, process.env.SECRET);
-
-    res.status(200).send({ type: 'SingleItemResponse', status: statusCodes.validToken });
+    validateUserInstance(newUser);
 
   } catch (err) {
-    if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
-      const error = new InternalError(statusCodes.userNotLoggedIn);
-      next(error);
-      return;
-    }
     next(err);
+
   }
+
+  User.findOne({
+    where: {
+      id: req.params.userId,
+    },
+  })
+  .then(user => {
+    if (user === null) throw new InternalError(statusCodes.nonExistingUser);
+    return updateUserInstance(user, newUser);
+  })
+  .then(user => {
+    res.status(200).send({
+      type: 'SingleItemResponse',
+      status: statusCodes.OK,
+      data: user,
+    })
+  })
+  .catch(err => {
+    next(err);
+  });
+};
+
+/*******************************************************************************
+ * Handles DELETE requests to user/{id}.
+ * Deletes a row in users table with the specified id.
+ * If there is no such user returns an error response.
+ */
+const deleteById = (req, res, next) => {
+  const User = req.app.get('models').User;
+
+  User.findOne({
+    where: {
+      id: req.params.userId,
+    },
+  })
+  .then(user => {
+    if (user === null) throw new InternalError(statusCodes.nonExistingUser);
+    return user.destroy();
+  })
+  .then(() => {
+    res.status(200).send({
+      type: 'SingleItemResponse',
+      status: statusCodes.OK,
+    })
+  })
+  .catch(err => {
+    next(err);
+  });
 }
 
-module.exports.register = register;
-module.exports.login = login;
-module.exports.validate = validate;
+/**
+ * This function is not exported outside of this module.
+ * Updates user instance with data from newUser argument and saves it to database.
+ * @param {*} user User instance that needs updating.
+ * @param {*} newUser Partial user instance provided in request. This data
+ * replaces data in the old user instance. This instance should be validated
+ * beforehand because this function will treat it as such.
+ * @async
+ */
+const updateUserInstance = async (user, newUser) => {
+  const properties = Object.keys(newUser);
+
+  properties.forEach(property => {
+    if (property === 'password') {
+      const hashedPassword = Password.hashPasswordWithSalt(newUser[property]);
+      user.set(property, hashedPassword);
+
+    } else {
+      user.set(property, newUser[property]);
+
+    }
+  });
+
+  await user.save();
+  return user;
+};
+
+/**
+ * This function is not exported outside of this module.
+ * Validates user instance.
+ * @param {*} user User instance.
+ */
+const validateUserInstance = (user) => {
+  const properties = Object.keys(user);
+  const validProperties = [
+    'firstName',
+    'lastName',
+    'userName',
+    'email',
+    'password',
+    'RoleId',
+  ];
+  /* These properties are part of the internal server domain and as such cannot
+  be changed nor there should be a reason to change them. */
+  const validImmutableProperties = [
+    'id',
+    'uuid',
+  ];
+
+  properties.forEach(property => {
+    if (![...validProperties, ...validImmutableProperties].includes(property)) {
+      throw new Error(`${property} is not a field in the User model.`);
+
+    } else if (validImmutableProperties.includes(property)) {
+      throw new Error(`You are not allowed to change ${property} property of the User model.`);
+    }
+  });
+};
+
+module.exports.getAll = getAll;
+module.exports.getById = getById;
+module.exports.updateById = updateById;
+module.exports.deleteById = deleteById;

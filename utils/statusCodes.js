@@ -60,6 +60,14 @@ const statusCodesEn = {
     code: 508,
     message: "User is not logged in.",
   },
+  notSufficientRights: {
+    code: 509,
+    message: "User does not have sufficient rights for this endpoint.",
+  },
+  noToken: {
+    code: 510,
+    message: "No token provided.",
+  },
 }
 
 module.exports = statusCodesEn;

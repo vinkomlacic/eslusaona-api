@@ -3,6 +3,7 @@
  * @author vmlacic  
  */
 'use strict';
+const password = require('../utils/password');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -37,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [6, undefined],
       },
+      set(value) {
+        const hashedPassword = password.hashPasswordWithSalt(value);
+        this.setDataValue('password', hashedPassword);
+      }
     },
   }, {});
   User.associate = function(models) {
