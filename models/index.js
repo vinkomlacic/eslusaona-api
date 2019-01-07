@@ -1,3 +1,7 @@
+/**
+ * Creates connection to database and configures models and their associations.
+ * @author vmlacic
+ */
 'use strict';
 
 const fs = require('fs');
