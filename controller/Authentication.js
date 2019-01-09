@@ -5,18 +5,21 @@
  * @author vmlacic
  */
 'use strict'
-const passwordUtils = require('../utils/password');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const checkRequired = require('../utils/checkRequiredAttributes');
-const statusCodes = require('../utils/statusCodes');
-const InternalError = require('../utils/InternalError');
+const {
+  Password,
+  checkRequiredAttributes,
+  statusCodes,
+  InternalError,
+} = require('../utils');
+const { SingleItemResponse } = require('../utils/response');
 
 /***************************************************************************************************
  * Handles POST request to /register.
  */
 const register = async (req, res, next) => {
-  const requestValid = checkRequired(['firstName', 'lastName', 'userName', 'email', 'password'], req);
+  const requestValid = checkRequiredAttributes(['firstName', 'lastName', 'userName', 'email', 'password'], req);
   if (requestValid instanceof Error) {
     next(requestValid);
     return;
@@ -69,11 +72,8 @@ const register = async (req, res, next) => {
     });
   })
   .then(user => {
-    return res.status(200).send({ 
-      type: 'SingleItemResponse',
-      status: statusCodes.registrationSuccess,
-      data: user,
-    });
+    const response = new SingleItemResponse(statusCodes.registrationSuccess, { user });
+    return res.status(200).send(response);
   })
   .catch(err =>  {
     next(err);
@@ -85,7 +85,7 @@ const register = async (req, res, next) => {
  * Handles POST request to /login.
  */
 const login = (req, res, next) => {
-  const requestValid = checkRequired(['userName', 'password'], req);
+  const requestValid = checkRequiredAttributes(['userName', 'password'], req);
   if (requestValid instanceof Error) {
     next(requestValid);
     return;
@@ -110,7 +110,7 @@ const login = (req, res, next) => {
 
     const hashPassword = user.get('password');
 
-    if (!passwordUtils.validatePassword(password, hashPassword)) {
+    if (!Password.validatePassword(password, hashPassword)) {
       const error = new InternalError(statusCodes.invalidPassword);
       next(error);
       return;
@@ -124,13 +124,8 @@ const login = (req, res, next) => {
       expiresIn: 600,
     });
 
-    return res.status(200).send({
-      type: 'SingleItemResponse',
-      status: statusCodes.loginSuccess,
-      data: {
-        token
-      }
-    });
+    const response = new SingleItemResponse(statusCodes.loginSuccess, { token });
+    return res.status(200).send(response);
   })
   .catch(err => {
     next(err);
@@ -155,11 +150,8 @@ const validate = (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
-    res.status(200).send({
-      type: 'SingleItemResponse',
-      status: statusCodes.validToken,
-      data: decodedToken,
-    });
+    const response = new SingleItemResponse(statusCodes.validToken, { decodedToken });
+    res.status(200).send(response);
 
   } catch (err) {
     if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {

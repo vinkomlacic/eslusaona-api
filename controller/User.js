@@ -5,9 +5,8 @@
  */
 'use strict';
 
-const statusCodes = require('../utils/statusCodes');
-const InternalError = require('../utils/InternalError');
-const Password = require('../utils/password');
+const { statusCodes, InternalError, Password } = require('../utils');
+const { SingleItemResponse, ListItemResponse } =  require('../utils/response');
 
 /*******************************************************************************
  * Handles GET requests to /user. Returns all users.
@@ -17,11 +16,8 @@ const getAll = (req, res, next) => {
 
   User.findAll({})
   .then(users => {
-    res.status(200).send({
-      type: 'ListItemResponse',
-      status: statusCodes.OK,
-      data: users,
-    });
+    const response = new ListItemResponse(statusCodes.OK, users);
+    res.status(200).send(response);
   })
   .catch(err => {
     next(err);
@@ -42,11 +38,8 @@ const getById = (req, res, next) => {
   .then(user => {
     if (user === null) throw new InternalError(statusCodes.nonExistingUser);
 
-    res.status(200).send({
-      type: 'SingleItemResponse',
-      status: statusCodes.OK,
-      data: user,
-    });
+    const response = new SingleItemResponse(statusCodes.OK, { user });
+    res.status(200).send(response);
   })
   .catch(err => {
     next(err);
@@ -84,11 +77,8 @@ const updateById = (req, res, next) => {
     return updateUserInstance(user, newUser);
   })
   .then(user => {
-    res.status(200).send({
-      type: 'SingleItemResponse',
-      status: statusCodes.OK,
-      data: user,
-    })
+    const response = new SingleItemResponse(statusCodes.OK, { user });
+    res.status(200).send(response);
   })
   .catch(err => {
     next(err);
@@ -113,10 +103,10 @@ const deleteById = (req, res, next) => {
     return user.destroy();
   })
   .then(() => {
-    res.status(200).send({
-      type: 'SingleItemResponse',
-      status: statusCodes.OK,
-    })
+    const response = new SingleItemResponse(statusCodes.OK, {
+      message: `User ${req.params.userId} deleted.`,
+    });
+    res.status(200).send(response);
   })
   .catch(err => {
     next(err);

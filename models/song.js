@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    thumbnailPath: DataTypes.STRING,
   }, {});
 
   Song.associate = function(models) {

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     year: DataTypes.STRING,
+    albumArtPath: DataTypes.STRING,
   }, {});
 
   Album.associate = models => {
