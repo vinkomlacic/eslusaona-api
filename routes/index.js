@@ -4,11 +4,13 @@
  */
 
 module.exports = function(app) {
-  const authController = require('../controller/Authentication');
   const userRouter = require('./user');
-
+  const songRouter = require('./song');
+  
   app.use('/user', userRouter);
-
+  app.use('/song', songRouter);
+  
+  const authController = require('../controller/Authentication');
   /**
    * Handles requests to /login.
    * Contents of the request are username/email and password.
@@ -50,6 +52,10 @@ module.exports = function(app) {
    * Response status is OK if the token has not expired.
    */
   app.get('/validate', authController.validate);
+
+  app.get('/', (req, res, next) => {
+    res.status(200).send('Hi! Server is working properly for this endpoint.');
+  });
 
   
 }

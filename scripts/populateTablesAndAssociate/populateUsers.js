@@ -5,7 +5,6 @@
 'use strict';
 const faker = require('faker');
 const crypto = require('crypto');
-const passwordUtils = require('../utils/password');
 
 const populateUsers = async (database, count) => {
   const User = database.User;
@@ -27,7 +26,6 @@ const populateUsers = async (database, count) => {
     const userName = faker.internet.userName(firstName, lastName);
     const email = faker.internet.email(firstName, lastName);
     const password = faker.internet.password(8, true);
-    const passwordStoreValue = passwordUtils.hashPasswordWithSalt(password);
 
     await User.create({
       Role: faker.random.arrayElement([userRole, adminRole]),
@@ -36,7 +34,7 @@ const populateUsers = async (database, count) => {
       lastName,
       userName,
       email,
-      password: passwordStoreValue,
+      password,
     })
     .catch(error => {
       console.error(`Error occurred in populateUser:\n${error.message}`);

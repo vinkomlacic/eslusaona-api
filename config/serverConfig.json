@@ -1,4 +1,5 @@
 {
-  "environment": "development",
-  "secret": "VINKOLEGENDA"
+  "node_env": "development",
+  "secret": "VINKOLEGENDA",
+  "file_repository": "E:/FileRepository_1st"
 }

@@ -1,6 +1,9 @@
 /**
  * Validates JWT on incoming request. This must be included in all routes that
  * require user to be authenticated beforehand.
+ * @todo Needs rewrite so it's easier to validate some routes for user and some
+ * for admin. The way it is now there is a need for separating routes into separate
+ * routers which is impractical.
  * @author vmlacic
  */
 'use strict';

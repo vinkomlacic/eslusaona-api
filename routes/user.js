@@ -22,5 +22,4 @@ router.get('/:userId', userController.getById);
 router.patch('/:userId', userController.updateById);
 router.delete('./:userId', userController.deleteById);
 
-
 module.exports = router;

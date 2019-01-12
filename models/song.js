@@ -9,9 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING,
-      unique: true,
+      allowNull: false,
     },
-    length: DataTypes.INTEGER,
+    length: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     filePath: {
       type: DataTypes.STRING,
       allowNull: false,

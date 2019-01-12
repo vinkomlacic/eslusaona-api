@@ -8,8 +8,9 @@ const env = require('../config/serverConfig');
 const server = require('../server');
 
 // Configuring environment variables.
-process.env.NODE_ENV = env.environment;
-process.env.SECRET = env.secret;
+Object.keys(env).forEach(key => {
+  process.env[key.toUpperCase()] = env[key];
+});
 
 // Start server.
 server.start();

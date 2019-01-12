@@ -37,6 +37,10 @@ Object.keys(db).forEach(modelName => {
 
 sequelize.sync();
 
+// throwaway buggy code used for filling base with fake data
+// const { populateTablesAndAssociate } = require('../scripts/populateTablesAndAssociate');
+// populateTablesAndAssociate(db);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
