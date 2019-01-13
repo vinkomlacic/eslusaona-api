@@ -1,0 +1,1337 @@
+{
+  "info": {
+    "description": "REST server for eslusaona-api",
+    "title": "eslusaona-api",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "",
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": ""
+    }
+  },
+  "swagger": "2.0",
+  "paths": {
+    "/album": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: all albums",
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/album/{id}": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: album with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the album does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "name": "newAlbum",
+            "in": "required",
+            "description": "Partial song model. Can only contain fields\nfrom album model. Cannot contain id field because it is immutable.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          }
+        ],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: updated album model",
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the album does\nnot exist or if the request is of invalid format.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: success message",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the album\ndoes not exist.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/album/{id}/songs": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: songs which are associated with\nthe album with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the album does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/album/{id}/artists": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: artists which are associated with\nthe album with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the album does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/album/{id}/genres": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "album"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: genres which are associated with\nthe album with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Genre"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the album does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/artist": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: all artists",
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/artist/{id}": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: artist with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "name": "newArtist",
+            "in": "required",
+            "description": "Partial artist model. Can only contain\nfields from song model. Cannot contain id field because it is immutable.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          }
+        ],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: updated artist model",
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist of if the request is of invalid format.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: success message",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/artist/{id}/songs": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: songs which are associated with\nthe artist with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the artist does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/artist/{id}/albums": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: albums which are associated with\nthe artist with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the artist does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/artist/{id}/genres": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "artist"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: genres which are associated with\nthe artist with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Genre"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the artist does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/genre": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "genre"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: all genres",
+            "schema": {
+              "$ref": "#/definitions/Genre"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/genre/{id}": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "genre"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: genre with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Genre"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the genre does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/genre/{id}/songs": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "genre"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: songs which are associated with\nthe genre with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Genre"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the genre does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/genre/{id}/artists": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "genre"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: artists which are associated with\nthe genre with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the genre does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/genre/{id}/albums": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "genre"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: albums which are associated with\nthe genre with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the genre does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/login": {
+      "post": {
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "description": "/** \nHandles requests to /login.",
+        "tags": [
+          "authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: the JWT token",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error response if the user does not exist\nor the username / password combination is invalid.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/register": {
+      "post": {
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": null,
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "description": "/** \nHandles requests to /register.",
+        "tags": [
+          "authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: The newly created user data",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "500": {
+            "description": "Error response if the request format is\ninvalid on email or username already exist in database.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/validate": {
+      "post": {
+        "parameters": [],
+        "description": "/** \nHandles requests to /validate.",
+        "tags": [
+          "authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: decoded token",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error if the token has expired or is\ninvalid in any other way.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/": {
+      "get": {
+        "parameters": [],
+        "description": "/**",
+        "tags": [
+          "default"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: hello message",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "text/plain"
+        ]
+      }
+    },
+    "/song": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: all songs",
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "newSong",
+            "in": "required",
+            "description": "Song model.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          }
+        ],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: newly created song model",
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the model\nhas not passed server validation.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/song/{id}": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: song with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "name": "newSong",
+            "in": "required",
+            "description": "Partial song model. Can only contain fields\nfrom song model. Cannot contain id field because it is immutable.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          }
+        ],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: updated song model",
+            "schema": {
+              "$ref": "#/definitions/Song"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist or if the request is of invalid format.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: success message",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song\ndoes not exist.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/song/{id}/album": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: album of the song with the\nspecified id",
+            "schema": {
+              "$ref": "#/definitions/Album"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/song/{id}/artists": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "song"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: artists which are associated with\nthe song with the specified id",
+            "schema": {
+              "$ref": "#/definitions/Artist"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the song does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "ListItemResponse: all users",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: user with the specified id",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the user does\nnot exist",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "name": "newUser",
+            "in": "required",
+            "description": "Partial user model. Can only contain\nfields from user model. Cannot contain id or uuid field because they are\nimmutable.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: updated user model",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the user does\nnot exist or if the request is of invalid format.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "parameters": [],
+        "description": "",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "SingleItemResponse: success message",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error if not authenticated or if the user does\nnot exist.",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Album": {
+      "required": [],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        },
+        "year": {
+          "type": "string",
+          "description": ""
+        },
+        "albumArtPath": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "Artist": {
+      "required": [],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "Genre": {
+      "required": [],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": ""
+        },
+        "name": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "Status": {
+      "required": [],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": ""
+        },
+        "message": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "Response": {
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
+          "$ref": "#/definitions/Status"
+        },
+        "data": {
+          "type": "object",
+          "description": ""
+        }
+      }
+    },
+    "User": {
+      "required": [],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": ""
+        },
+        "uuid": {
+          "type": "string",
+          "description": ""
+        },
+        "firstName": {
+          "type": "string",
+          "description": ""
+        },
+        "lastName": {
+          "type": "string",
+          "description": ""
+        },
+        "userName": {
+          "type": "string",
+          "description": ""
+        },
+        "email": {
+          "type": "string",
+          "description": ""
+        },
+        "password": {
+          "type": "string",
+          "description": ""
+        },
+        "RoleId": {
+          "type": "integer",
+          "description": ""
+        }
+      }
+    },
+    "Song": {
+      "required": [],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": ""
+        },
+        "title": {
+          "type": "string",
+          "description": ""
+        },
+        "length": {
+          "type": "integer",
+          "description": ""
+        },
+        "filePath": {
+          "type": "string",
+          "description": ""
+        },
+        "AlbumId": {
+          "type": "integer",
+          "description": "foreign key from albums table"
+        }
+      }
+    }
+  },
+  "responses": {},
+  "parameters": {},
+  "tags": [
+    {
+      "name": "album",
+      "description": "handles CRUD operations on album model"
+    },
+    {
+      "name": "artist",
+      "description": "handles CRUD operations on artist model"
+    },
+    {
+      "name": "genre",
+      "description": "handles CRUD operations on genre model"
+    },
+    {
+      "name": "authentication",
+      "description": "handles authentication operations"
+    },
+    {
+      "name": "default",
+      "description": ""
+    },
+    {
+      "name": "song",
+      "description": "handles CRUD operations on song model"
+    },
+    {
+      "name": "user",
+      "description": "handles CRUD operations on user model. Note: available only to\nadministrator account"
+    }
+  ]
+}

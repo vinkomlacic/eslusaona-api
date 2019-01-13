@@ -14,7 +14,7 @@ const { SingleItemResponse, ListItemResponse } =  require('../utils/response');
 const getAll = (req, res, next) => {
   const User = req.app.get('models').User;
 
-  User.findAll({})
+  User.findAll()
   .then(users => {
     const response = new ListItemResponse(statusCodes.OK, users);
     res.status(200).send(response);
@@ -125,18 +125,9 @@ const deleteById = (req, res, next) => {
 const updateUserInstance = async (user, newUser) => {
   const properties = Object.keys(newUser);
 
-  properties.forEach(property => {
-    if (property === 'password') {
-      const hashedPassword = Password.hashPasswordWithSalt(newUser[property]);
-      user.set(property, hashedPassword);
-
-    } else {
-      user.set(property, newUser[property]);
-
-    }
-  });
-
+  properties.forEach(property => user.set(property, newUser[property]));
   await user.save();
+  
   return user;
 };
 

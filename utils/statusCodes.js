@@ -4,70 +4,29 @@
  * @author vmlacic
  */
 'use strict';
+const StatusCode = require('./StatusCode');
 
 const statusCodesEn = {
-  OK: {
-    code: 0,
-    message: "Everything OK.",
-  },
-  loginSuccess: {
-    code: 1,
-    message: "Login success!",
-  },
-  registrationSuccess: {
-    code: 2,
-    message: "Registration success!",
-  },
-  validToken: {
-    code: 3,
-    message: "Token is valid!",
-  },
+  // Ok status codes
+  OK: new StatusCode(0, 'Everything OK.'),
+  loginSuccess: new StatusCode(1, 'Login success!'),
+  registrationSuccess: new StatusCode(2, 'Registration success!'),
+  validToken: new StatusCode(3, 'Token is valid!'),
 
-  /********************************************************************************************** */
-  error: {
-    code: 500,
-    message: "General error.",
-  },
-  nonExistingUser: {
-    code: 501,
-    message: "User does not exist.",
-  },
-  invalidPassword: {
-    code: 502,
-    message: "Invalid username/password combination.",
-  },
-  noBodyInRequest: {
-    code: 503,
-    message: "Invalid request: no body!",
-  },
-  requiredAttributeNotFound: {
-    code: 504,
-    message: "Required attribute does not exist in request body.",
-  },
-  passwordTooShort: {
-    code: 505,
-    message: "Password is too short.",
-  },
-  userNameExists: {
-    code: 506,
-    message: "Username already taken.",
-  },
-  emailExists: {
-    code: 507,
-    message: "Email already taken.",
-  },
-  userNotLoggedIn: {
-    code: 508,
-    message: "User is not logged in.",
-  },
-  notSufficientRights: {
-    code: 509,
-    message: "User does not have sufficient rights for this endpoint.",
-  },
-  noToken: {
-    code: 510,
-    message: "No token provided.",
-  },
-}
+  // Error status codes
+  error: new StatusCode(500, 'General error.'),
+  nonExistingUser: new StatusCode(501, 'User does not exist.'),
+  invalidPassword: new StatusCode(502, 'Invalid username/password combination.'),
+  noBodyInRequest: new StatusCode(503, 'Invalid request: no body!'),
+  requiredAttributeNotFound: new StatusCode(504, 'Required attribute does not exist in request body.'),
+  passwordTooShort: new StatusCode(505, 'Password is too short.'),
+  userNameExists: new StatusCode(506, 'Username already taken.'),
+  emailExists: new StatusCode(507, 'Email already taken.'),
+  userNotLoggedIn: new StatusCode(508, 'User is not logged in.'),
+  notSufficientRights: new StatusCode(509, 'User does not have sufficient rights for this endpoint.'),
+  noToken: new StatusCode(510, 'No token provided.'),
+  nonExistingSong: new StatusCode(511, 'Song does not exist.'),
+  validationError: new StatusCode(512, 'Validation failed.'),
+};
 
 module.exports = statusCodesEn;

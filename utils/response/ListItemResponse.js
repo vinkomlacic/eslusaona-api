@@ -16,3 +16,5 @@ class ListItemResponse {
     this.data = data;
   }
 }
+
+module.exports = ListItemResponse;

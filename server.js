@@ -7,6 +7,7 @@
 const https = require('https');
 const express = require('express');
 const fs = require('fs');
+const swagger = require('./utils/swagger');
 
 // middleware
 const Logger = require('./middleware/logger');
@@ -39,13 +40,15 @@ const start = () => {
   // Middleware error handler
   server.use(errorHandler);
 
+  // Initialize swagger
+  swagger(server);
+
   // Listen on port 3000.
   https.createServer({
     key: fs.readFileSync('./certs/server.key'),
     cert: fs.readFileSync('./certs/server.cert'),
   }, server).listen(port, () => {
     console.log('eslusaona-api server started on: ' + port);
-
   });
 }
 

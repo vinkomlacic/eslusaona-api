@@ -4,8 +4,8 @@
  */
 'use strict';
 
-const statusCodes = require('../utils/statusCodes');
-const InternalError = require('../utils/InternalError');
+const { statusCodes, InternalError } = require('../utils');
+const { SingleItemResponse } = require('../utils/response');
 
 // Catch all handler
 const handle = (err, req, res, next) => {
@@ -20,16 +20,14 @@ const handle = (err, req, res, next) => {
 
   }
 
-  res
-    .status(500)
-    .send({
-      type: 'SingleItemResponse',
-      status,
-      error: {
-        ...err,
-        message: err.message,
-      }
-    });
+  const response = new SingleItemResponse(status, {
+    error: {
+      ...err,
+      message: err.message,
+    },
+  });
+
+  res.status(500).send(response);
 };
 
 module.exports = handle;

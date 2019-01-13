@@ -11,3 +11,5 @@ class SingleItemResponse {
     this.data = data;
   }
 }
+
+module.exports = SingleItemResponse;
