@@ -30,25 +30,23 @@ const validateForRoles = (allowedRoleNames) => (req, res, next) => {
     let error = new InternalError(statusCodes.notSufficientRights);
     if (!token) {
       error = new InternalError(statusCodes.noToken);
-      next(error);
-      return;
+      throw error;
     }
 
     try {
-      const decodedToken = jwt.verify(token, process.env.SECRET);
       token = token.split(' ')[1];
+      const decodedToken = jwt.verify(token, process.env.SECRET);
       if (!roleIds.includes(decodedToken.RoleId)) {
-        next(error);
-        return;
+        throw error;
       }
 
     } catch (err) {
       if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
         error = new InternalError(statusCodes.userNotLoggedIn);
-        next(error);
+        throw error;
 
       } else {
-        next(error);
+        throw error;
 
       }
 

@@ -1,6 +1,7 @@
 /**
  * Internal status code of the application. They always return 200 http code.
  * @todo Configure other locales.
+ * @todo Possible solution is using enums!
  * @author vmlacic
  */
 'use strict';
@@ -27,6 +28,10 @@ const statusCodesEn = {
   noToken: new StatusCode(510, 'No token provided.'),
   nonExistingSong: new StatusCode(511, 'Song does not exist.'),
   validationError: new StatusCode(512, 'Validation failed.'),
+  nonExistingArtist: new StatusCode(513, 'Artist does not exist.'),
+  nonExistingResource: new StatusCode(514, 'Resource does not exist.'),
+  nonExistingAlbum: new StatusCode(515, 'Album does not exist.'),
+  nonExistingGenre: new StatusCode(516, 'Genre does not exist.'),
 };
 
 module.exports = statusCodesEn;

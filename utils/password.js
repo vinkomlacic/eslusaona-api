@@ -19,7 +19,7 @@ const statusCodes = require('../utils/statusCodes');
  * @throws Error if the password is too short.
  */
 const hashPasswordWithSalt = password => {
-  if (password.length < 6) {
+  if (password.length < 8) {
     throw new InternalError(statusCodes.passwordTooShort);
   }
 

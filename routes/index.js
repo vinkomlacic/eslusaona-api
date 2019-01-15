@@ -38,9 +38,15 @@
 module.exports = function(app) {
   const userRouter = require('./user');
   const songRouter = require('./song');
+  const artistRouter = require('./artist');
+  const albumRouter = require('./album');
+  const genreRouter = require('./genre');
   
   app.use('/user', userRouter);
   app.use('/song', songRouter);
+  app.use('/artist', artistRouter);
+  app.use('/album', albumRouter);
+  app.use('/genre', genreRouter);
   
   const authController = require('../controller/Authentication');
 

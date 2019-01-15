@@ -111,3 +111,4 @@ router.patch('/:artistId', artistController.updateById);
  */
 router.delete('/:artistId', artistController.deleteById);
 
+module.exports = router;

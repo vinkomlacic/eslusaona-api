@@ -9,8 +9,10 @@ const checkRequiredAttributes = require('./checkRequiredAttributes');
 const InternalError = require('./InternalError');
 const password = require('./password');
 const statusCodes = require('./statusCodes');
+const updateInstance = require('./updateInstance');
 
 module.exports.checkRequiredAttributes = checkRequiredAttributes;
 module.exports.InternalError = InternalError;
 module.exports.Password = password;
 module.exports.statusCodes = statusCodes;
+module.exports.updateInstance = updateInstance;

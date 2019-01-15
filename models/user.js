@@ -35,9 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      validate: {
-        len: [6, undefined],
-      },
       set(value) {
         const hashedPassword = password.hashPasswordWithSalt(value);
         this.setDataValue('password', hashedPassword);

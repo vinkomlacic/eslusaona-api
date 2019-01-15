@@ -71,18 +71,6 @@ router.get('/:albumId/songs', albumController.getSongs);
 router.get('/:albumId/artists', albumController.getArtists);
 
 /**
- * @route GET /album/{id}/genres
- * @group album - handles CRUD operations on album model
- * @produces application/json
- * @returns {Genre.model} 200 - ListItemResponse: genres which are associated with
- * the album with the specified id
- * @returns {Response.model} 500 - Error if not authenticated or if the album does
- * not exist
- * @security JWT
- */
-router.get('/:albumId/genres', albumController.getGenres);
-
-/**
  * @route PATCH /album/{id}
  * @group album - handles CRUD operations on album model
  * @param {Album.model} newAlbum.required Partial song model. Can only contain fields
@@ -106,3 +94,5 @@ router.patch('/:albumId', albumController.updateById);
  * @security JWT
  */
 router.delete('/:albumId', albumController.deleteById);
+
+module.exports = router;

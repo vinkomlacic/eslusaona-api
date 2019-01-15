@@ -68,14 +68,4 @@ router.get('/:genreId/songs', genreController.getSongs);
  */
 router.get('/:genreId/artists', genreController.getArtists);
 
-/**
- * @route GET /genre/{id}/albums
- * @group genre - handles CRUD operations on genre model
- * @produces application/json
- * @returns {Album.model} 200 - ListItemResponse: albums which are associated with
- * the genre with the specified id
- * @returns {Response.model} 500 - Error if not authenticated or if the genre does
- * not exist
- * @security JWT
- */
-router.get('/:genreId/albums', genreController.getAlbums);
+module.exports = router;

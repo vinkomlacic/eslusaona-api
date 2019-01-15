@@ -16,7 +16,7 @@ const getAll = (req, res, next) => {
 
   User.findAll()
   .then(users => {
-    const response = new ListItemResponse(statusCodes.OK, users);
+    const response = new ListItemResponse(statusCodes.OK, { users });
     res.status(200).send(response);
   })
   .catch(err => {
