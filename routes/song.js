@@ -37,6 +37,16 @@ router.use(JWTValidationMiddleware.validateForRoles(['ADMINISTRATOR', 'USER']));
 router.get('/', songController.getAll);
 
 /**
+ * @route POST /song/search
+ * @group song - handles CRUD operations on song model
+ * @produces application/json
+ * @returns {Song.model} 200 - ListItemResponse: all songs matching the query
+ * @returns {Response.model} 500 - Error if not authenticated.
+ * @security JWT
+ */
+router.post('/search', songController.search);
+
+/**
  * @route GET /song/{id}
  * @group song - handles CRUD operations on song model
  * @produces application/json

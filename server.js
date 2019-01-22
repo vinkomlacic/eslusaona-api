@@ -27,6 +27,11 @@ const start = () => {
   server.disable('x-powered-by');
 
   // Set up server middleware at application level
+  server.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
   if (process.env.NODE_ENV === 'development') {
@@ -41,13 +46,10 @@ const start = () => {
   server.use(errorHandler);
 
   // Initialize swagger
-  swagger(server);
+  swagger(server, port);
 
-  // Listen on port 3000.
-  https.createServer({
-    key: fs.readFileSync('./certs/server.key'),
-    cert: fs.readFileSync('./certs/server.cert'),
-  }, server).listen(port, () => {
+  // Listen on port.
+  server.listen(port, () => {
     console.log('eslusaona-api server started on: ' + port);
   });
 }

@@ -32,6 +32,7 @@ const statusCodesEn = {
   nonExistingResource: new StatusCode(514, 'Resource does not exist.'),
   nonExistingAlbum: new StatusCode(515, 'Album does not exist.'),
   nonExistingGenre: new StatusCode(516, 'Genre does not exist.'),
+  queryStringNotProvided: new StatusCode(517, 'Query string invalid or not provided.'),
 };
 
 module.exports = statusCodesEn;

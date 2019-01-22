@@ -68,6 +68,89 @@ const getAll = (req, res, next) => {
 };
 
 /*******************************************************************************
+ * Handles POST requests to /song/search. Returns all songs that match the query.
+ * Matches songs with the given string by title, artist name, album name or genre
+ * name. If any of these match they are included in the result. * 
+ */
+const search = async (req, res, next) => {
+  const { Song, Artist, Album, Genre } = req.app.get('models');
+
+  const result = [];
+  const { query } = req.body;
+  if (!query) {
+    next(new InternalError(statusCodes.queryStringNotProvided));
+  }
+
+  const songs = await Song.findAll({
+    where: {
+      title: query,
+    },
+  });
+
+  if (songs !== null) {
+    songs.forEach(song => result.push(song));
+  }
+
+  const matchingArtists = await Artist.findAll({
+    where: {
+      name: query,
+    },
+  });
+
+  if (matchingArtists !== null) {
+    for (const artist of matchingArtists) {
+      const matchingSongs = await artist.getSongs();
+
+      if (matchingSongs !== null) {
+        matchingSongs.forEach(song => result.push(song));
+      }
+    }
+  }
+
+  const matchingAlbums = await Album.findAll({
+    where: {
+      name: query,
+    },
+  });
+
+  if (matchingAlbums !== null) {
+    for (const album of matchingAlbums) {
+      const matchingSongs = await album.getSongs();
+
+      if (matchingSongs !== null) {
+        matchingSongs.forEach(song => result.push(song));
+      }
+    }
+  }
+
+  const matchingGenres = await Genre.findAll({
+    where: {
+      name: query,
+    },
+  });
+
+  if (matchingGenres !== null) {
+    for (const genre of matchingGenres) {
+      const matchingSongs = await genre.getSongs();
+
+      if (matchingSongs !== null) {
+        matchingSongs.forEach(song => result.push(song));
+      }
+    }
+  }
+
+  try {
+    const response = new ListItemResponse(statusCodes.OK, { songs: result });
+    res.status(200).send(response);
+
+  } catch (err) {
+    next(err);
+
+  }
+
+};
+
+/*******************************************************************************
  * Handles GET requests to /song/{id}
  * @todo Create streaming endpoint.
  */
@@ -286,6 +369,7 @@ const validateRequest = (req) => {
 module.exports = {
   create,
   getAll,
+  search,
   getById,
   getAlbum,
   getArtists,

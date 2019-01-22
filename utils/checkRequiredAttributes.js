@@ -23,7 +23,7 @@ const checkRequiredAttributes = (requiredAttributes, req) => {
   }
 
   let returnValue = true;
-  requiredAttributes.forEach(attribute => {
+  for (const attribute of requiredAttributes) {
     if (typeof attribute !== 'string') {
       throw TypeError('Invalid argument type. All members of requiredAttributes array must be strings!');
     }
@@ -33,8 +33,9 @@ const checkRequiredAttributes = (requiredAttributes, req) => {
         statusCodes.requiredAttributeNotFound,
         `Required attribute: ${attribute} does not exist in request body.`,
       );
+      break;
     }
-  });
+  }
 
   return returnValue; 
 }

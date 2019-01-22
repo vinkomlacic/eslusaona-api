@@ -1,5 +1,6 @@
 {
   "node_env": "development",
   "secret": "VINKOLEGENDA",
+  "port": 3001,
   "file_repository": "E:/FileRepository_1st"
 }

@@ -6,7 +6,7 @@
 
 const swagger = require('express-swagger-generator');
 
-const swaggerInitializer = (app) => {
+const swaggerInitializer = (app, listenPort) => {
   let options = {
     swaggerDefinition: {
       info: {
@@ -14,7 +14,7 @@ const swaggerInitializer = (app) => {
         title: 'eslusaona-api',
         version: '1.0.0',
       },
-      host: 'localhost:3000',
+      host: `localhost:${listenPort}`,
       basePath: '',
       produces: [
         'application/json',
@@ -22,7 +22,7 @@ const swaggerInitializer = (app) => {
       schemes: ['https'],
       securityDefinitions: {
         JWT: {
-          type: 'apiKey',
+          type: 'accessToken',
           in: 'header',
           name: 'Authorization',
           description: '',
